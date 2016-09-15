@@ -5,7 +5,7 @@
  */
 package Interface;
 
-import Negocio.GeradorPedido;
+
 import Pojo.ItemVenda;
 import Pojo.Produto;
 import java.awt.Component;
@@ -50,11 +50,7 @@ public class Venda extends javax.swing.JFrame {
         } catch(ArrayIndexOutOfBoundsException e){
             JOptionPane.showMessageDialog(null, "A linha já foi Excluída ou não existe!");
         }
-    }
-    
-    
-
-    
+    }    
     public void inserirItemvenda(ItemVenda item){
       try{
         
@@ -122,9 +118,6 @@ public class Venda extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("mysql?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
-        produtosQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT p FROM Produtos p");
-        produtosList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : produtosQuery.getResultList();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -143,7 +136,7 @@ public class Venda extends javax.swing.JFrame {
         jTextFieldExcluirItem = new javax.swing.JTextField();
         jTextField1 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Codigo");
@@ -261,9 +254,9 @@ public class Venda extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-        String ID = String.valueOf(GeradorPedido.getProximoPedido());
-        jTextField1.setEditable(Boolean.FALSE);
-        jTextField1.setText(ID);
+//        String ID = String.valueOf();
+//        jTextField1.setEditable(Boolean.FALSE);
+//        jTextField1.setText(ID);;
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
@@ -302,7 +295,6 @@ public class Venda extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.persistence.EntityManager entityManager;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonExcluirItem;
@@ -320,7 +312,5 @@ public class Venda extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldExcluirItem;
     private javax.swing.JTextField jTextFieldQtdProduto;
     private javax.swing.JTextField jTextFieldUnitPrice;
-    private java.util.List<Interface.Produtos> produtosList;
-    private javax.persistence.Query produtosQuery;
     // End of variables declaration//GEN-END:variables
 }

@@ -20,11 +20,15 @@ import java.util.logging.Logger;
 public class CriaConexao {
     private static Connection con; 
     
-    public static void CriaConexao() throws SQLException, ClassNotFoundException{
+    public CriaConexao() throws SQLException, ClassNotFoundException{
      
         try{
-         Class.forName("com.mysql.jdbc.Driver");
-         con = DriverManager.getConnection("jdbc:mysql://localhost/central","root","");
+        String url = "jdbc:mysql://localhost:3306/central";
+        String user = "root";
+        String pass = "root";
+        Class.forName("com.mysql.jdbc.Driver");
+        con = DriverManager.getConnection(url, user, pass);        
+
         }
         catch(ClassNotFoundException ex){
          System.out.println("classe não encontrada, adicione o drive nas bibliotecas");

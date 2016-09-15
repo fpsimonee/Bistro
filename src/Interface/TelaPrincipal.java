@@ -46,6 +46,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuNovaVenda = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAutoRequestFocus(false);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jMenuProduto.setText("Produtos");
 
@@ -70,6 +72,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuVenda.add(jMenuHistoricoVendas);
 
         jMenuNovaVenda.setText("Nova Venda");
+        jMenuNovaVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuNovaVendaActionPerformed(evt);
+            }
+        });
         jMenuVenda.add(jMenuNovaVenda);
 
         jMenuBar1.add(jMenuVenda);
@@ -93,14 +100,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jMenuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCadastroProdutosActionPerformed
         // TODO add your handling code here:
         CadastroProdutos cadprod = new CadastroProdutos();
-        cadprod.show();
+        cadprod.setVisible(true);
     }//GEN-LAST:event_jMenuCadastroProdutosActionPerformed
 
     private void jMenuHistoricoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuHistoricoVendasActionPerformed
         // TODO add your handling code here:
         CadastroVendas cadven = new CadastroVendas();
-        cadven.show();
+        cadven.setVisible(true);
     }//GEN-LAST:event_jMenuHistoricoVendasActionPerformed
+
+    private void jMenuNovaVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaVendaActionPerformed
+        // TODO add your handling code here:
+        Venda ven = new Venda();
+        ven.setVisible(true);        
+    }//GEN-LAST:event_jMenuNovaVendaActionPerformed
 
     /**
      * @param args the command line arguments

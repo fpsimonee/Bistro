@@ -5,6 +5,8 @@
  */
 package Main;
 
+import Interface.TelaPrincipal;
+
 /**
  *
  * @author felipe
@@ -16,6 +18,8 @@ public class Bistro {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        TelaPrincipal telaprincipal = new TelaPrincipal();
+        telaprincipal.setVisible(true);
     }
     
 }
