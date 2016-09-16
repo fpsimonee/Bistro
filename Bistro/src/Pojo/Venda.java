@@ -15,11 +15,24 @@ public class Venda {
     private String data;
     private int CodigoPedido;
     private ArrayList<ItemVenda> itensDaVenda;
+
+    public double getVlr_total() {
+        return vlr_total;
+    }
+
+    public void setVlr_total(double vlr_total) {
+        this.vlr_total = vlr_total;
+    }
+    private double vlr_total;
     
     
     public Venda(int CodigoCliente){
       this.itensDaVenda = new ArrayList<ItemVenda>();
       
+    }
+
+    public Venda() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public String getData() {
@@ -46,14 +59,15 @@ public class Venda {
         this.itensDaVenda = itensDaVenda;
     }  
     
-    public float getValorTotal(){
-      float retorno = 0;
-      for(int i=0; i<this.itensDaVenda.size();i++){
-       float valor = (this.itensDaVenda.get(i).getQuantidade()*this.itensDaVenda.get(i).getUnitprice());
-       retorno = retorno + valor;
-      }
-      return retorno; 
-    }
+//    
+//    public float getValorTotal(){
+//      float retorno = 0;
+//      for(int i=0; i<this.itensDaVenda.size();i++){
+//       float valor = (this.itensDaVenda.get(i).getQuantidade()*this.itensDaVenda.get(i).getUnitprice());
+//       retorno = retorno + valor;
+//      }
+//      return retorno; 
+//    }
     
     
 }

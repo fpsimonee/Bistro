@@ -111,7 +111,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jMenuNovaVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaVendaActionPerformed
         // TODO add your handling code here:
-        Venda ven = new Venda();
+        VendaIT ven = new VendaIT();
         ven.setVisible(true);        
     }//GEN-LAST:event_jMenuNovaVendaActionPerformed
 

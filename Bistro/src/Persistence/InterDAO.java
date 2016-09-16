@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public interface InterDAO{
     public void inserir(Object obj) throws SQLException;
     public ArrayList consultar(Object obj) throws SQLException;
-    public void atualizar(Object obj) throws SQLException;
+    public void atualizar(int Codigo, Object obj) throws SQLException;
     public void remover(Object obj) throws SQLException;
     
 }

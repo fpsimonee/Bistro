@@ -25,7 +25,7 @@ public class ProdutoDAO implements InterDAO{
     }
 
     @Override
-    public void atualizar(Object obj) throws SQLException {
+    public void atualizar(int Codigo, Object obj) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

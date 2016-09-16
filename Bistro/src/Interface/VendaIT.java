@@ -6,26 +6,35 @@
 package Interface;
 
 
+import Persistence.VendaDAO;
 import Pojo.ItemVenda;
 import Pojo.Produto;
-import java.awt.Component;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JList;
+import Pojo.Venda;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+//import java.awt.Component;
+//import javax.swing.DefaultListCellRenderer;
+//import javax.swing.JList;
 import javax.swing.JOptionPane;
-//import javax.swing.JOptionPane;
-//import javax.swing.JTable;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.crypto.Data;
 
 /**
  *
  * @author felipe
  */
-public class Venda extends javax.swing.JFrame {
+public class VendaIT extends javax.swing.JFrame {
 
     /**
      * Creates new form Venda
      */
-    public Venda() {
+    public VendaIT() {
         initComponents();
     }
 
@@ -88,6 +97,20 @@ public class Venda extends javax.swing.JFrame {
     
     }
     
+    public int geraCodigoVenda(){
+       int max_id = new VendaDAO().max_id();
+       return max_id; 
+    }
+    
+    public String CurrentData (){
+       
+       Date date = new Date();       
+       SimpleDateFormat formatador = new SimpleDateFormat();
+       String data = formatador.format(date);       
+       return data;
+    
+    }
+    
 // Calculo do Valor total mas nao funcionou 
 //    public void CalculaprecoTotal() {
 //        BigDecimal total = BigDecimal.ZERO;
@@ -135,12 +158,14 @@ public class Venda extends javax.swing.JFrame {
         jButtonExcluirItem = new javax.swing.JButton();
         jTextFieldExcluirItem = new javax.swing.JTextField();
         jTextField1 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Codigo");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 33, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -164,18 +189,18 @@ public class Venda extends javax.swing.JFrame {
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 22, -1, -1));
 
         jLabel5.setText("Codigo Produto");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, 143, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, 120, 20));
 
         jTextFieldCodProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCodProdutoActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextFieldCodProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 60, 44, -1));
-        getContentPane().add(jTextFieldQtdProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 60, 45, -1));
+        getContentPane().add(jTextFieldCodProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 50, 44, -1));
+        getContentPane().add(jTextFieldQtdProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 45, -1));
 
         jLabel6.setText("Qtd");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 61, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 60, 40, -1));
 
         jButtonSalvar.setText("Salvar");
         jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -183,7 +208,7 @@ public class Venda extends javax.swing.JFrame {
                 jButtonSalvarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 420, 64, -1));
+        getContentPane().add(jButtonSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(424, 420, 80, -1));
 
         jButtonCancelar.setText("Cancelar");
         getContentPane().add(jButtonCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 420, 84, -1));
@@ -194,20 +219,20 @@ public class Venda extends javax.swing.JFrame {
                 jButtonAddActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 60, 73, -1));
+        getContentPane().add(jButtonAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 100, 80, -1));
 
-        jLabel3.setText("Unit Price: ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 60, 96, -1));
+        jLabel3.setText("Unit Price");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 80, -1));
 
         jTextFieldUnitPrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldUnitPriceActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextFieldUnitPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 60, 50, -1));
+        getContentPane().add(jTextFieldUnitPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 100, 50, -1));
 
         jLabel8.setText("Cancela Item: ");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 120, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 430, 120, -1));
 
         jButtonExcluirItem.setText("Excluir");
         jButtonExcluirItem.addActionListener(new java.awt.event.ActionListener() {
@@ -215,15 +240,26 @@ public class Venda extends javax.swing.JFrame {
                 jButtonExcluirItemActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonExcluirItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, 82, -1));
-        getContentPane().add(jTextFieldExcluirItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 100, 35, -1));
+        getContentPane().add(jButtonExcluirItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 420, 82, -1));
+        getContentPane().add(jTextFieldExcluirItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 420, 35, -1));
 
+        jTextField1.setEditable(false);
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 70, -1));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 70, -1));
+
+        jLabel2.setText("Data");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
+
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 130, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -234,11 +270,26 @@ public class Venda extends javax.swing.JFrame {
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         // TODO add your handling code here:
+//        Venda nova = new Venda();
+//        
+//        VendaDAO dao = new VendaDAO();
+//        
+//        nova.setCodigoPedido(dao.max_id());
+//        nova.setData();
+//        
+//        try {
+//            dao.inserir(dao);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Venda.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
         // TODO add your handling code here:
         this.AdicionaTabela();
+        jTextField2.setText(this.CurrentData());
+        String ID = String.valueOf("1"); // alterar o valor do valueof p/ this.geracodigo()
+        jTextField1.setText(ID);
         
     }//GEN-LAST:event_jButtonAddActionPerformed
 
@@ -254,10 +305,13 @@ public class Venda extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-//        String ID = String.valueOf();
-//        jTextField1.setEditable(Boolean.FALSE);
-//        jTextField1.setText(ID);;
+        
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -289,7 +343,7 @@ public class Venda extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Venda().setVisible(true);
+                new VendaIT().setVisible(true);
             }
         });
     }
@@ -300,6 +354,7 @@ public class Venda extends javax.swing.JFrame {
     private javax.swing.JButton jButtonExcluirItem;
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -308,6 +363,7 @@ public class Venda extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextFieldCodProduto;
     private javax.swing.JTextField jTextFieldExcluirItem;
     private javax.swing.JTextField jTextFieldQtdProduto;
