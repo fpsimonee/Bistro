@@ -11,9 +11,9 @@ package Pojo;
  */
 public class ItemVenda {
     private int quantidade;
-    private float Unitprice; 
+    private double Unitprice; 
     private int CodigoProduto;
-    private float priceItem;
+    private double priceItem;
 
     public int getQuantidade() {
         return quantidade;
@@ -23,11 +23,11 @@ public class ItemVenda {
         this.quantidade = quantidade;
     }
 
-    public float getUnitprice() {
+    public double getUnitprice() {
         return Unitprice;
     }
 
-    public void setUnitprice(float Unitprice) {
+    public void setUnitprice(double Unitprice) {
         this.Unitprice = Unitprice;
     }
 
@@ -39,11 +39,11 @@ public class ItemVenda {
         this.CodigoProduto = CodigoProduto;
     }
 
-    public float getPriceItem() {
+    public double getPriceItem() {
         return priceItem;
     }
 
-    public void setPriceItem(float priceItem) {
+    public void setPriceItem(double priceItem) {
         this.priceItem = priceItem;
     }
     

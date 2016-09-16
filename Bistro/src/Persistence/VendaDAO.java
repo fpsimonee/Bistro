@@ -26,9 +26,9 @@ public class VendaDAO implements InterDAO {
         try {
             this.con = new CriaConexao().getCon();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Problemas de Conexão com banco de dados.");
+            JOptionPane.showMessageDialog(null, "Problemas de Conexão com banco de dados."+ex.getMessage());
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Problema de Driver do banco de dados.");
+            JOptionPane.showMessageDialog(null, "Problema de Driver do banco de dados."+e.getMessage());
         }
     }
     
@@ -45,11 +45,11 @@ public class VendaDAO implements InterDAO {
             stm.setString(2, venda.getData());
             stm.setDouble(3, venda.getVlr_total());
             stm.execute();
-            JOptionPane.showMessageDialog(null, "Venda finalizada com sucesso!");
+            JOptionPane.showMessageDialog(null, "Venda Inciada com sucesso! Não esquece de finaliza-la para dados consistentes");
             
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Problemas de conexão com o banco de dados. "
-                    + "Venda não Finalizada.");
+                    + "Venda não Finalizada."+e.getMessage());
         }
     }
 
@@ -66,8 +66,8 @@ public class VendaDAO implements InterDAO {
             ResultSet rs = stm.executeQuery();
             
             while (rs.next()) {
-                Venda novo = new Venda();
-                novo.setCodigoPedido(rs.getInt(1));
+                Venda novo = new Venda(venda.getCodigoPedido());
+                //novo.setCodigoPedido(rs.getInt(1));
                 novo.setData(rs.getString(2));
                 novo.setVlr_total(rs.getDouble(3));
                 vet.add(novo);
@@ -116,7 +116,7 @@ public class VendaDAO implements InterDAO {
             query = "UPDATE VENDAS SET "
                     + "COD_VENDA = ? ,"
                     + "DATA_VENDA = ?,"
-                    + "VLR_TOTAL = ? ,"
+                    + "VLR_TOTAL = ? "
                     + "WHERE COD_VENDA = ?";
             PreparedStatement stm = con.prepareStatement(query);
             stm.setInt(1, Codigo);
@@ -128,7 +128,7 @@ public class VendaDAO implements InterDAO {
             
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Problemas de conexão com o banco de dados. "
-                    + "Venda não Finalizada.");
+                    + "Venda não Finalizada."+e.getMessage());
         }
     }
     
@@ -144,10 +144,12 @@ public class VendaDAO implements InterDAO {
         try {
             PreparedStatement stm = con.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
-            max_id = rs.getInt("max(cod_produto)");
+            while(rs.next()){
+            max_id = rs.getInt(1);
+            }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Problemas de conexão com o banco de dados.");
+            JOptionPane.showMessageDialog(null, "Problemas de conexão com o banco de dados."+e.getMessage());
         }
-        return max_id;
+        return max_id+1;
     }
 }

@@ -6,7 +6,7 @@
 package Pojo;
 
 import java.util.ArrayList;
-
+import Persistence.VendaDAO;
 /**
  *
  * @author felipe
@@ -15,6 +15,7 @@ public class Venda {
     private String data;
     private int CodigoPedido;
     private ArrayList<ItemVenda> itensDaVenda;
+
 
     public double getVlr_total() {
         return vlr_total;
@@ -26,14 +27,9 @@ public class Venda {
     private double vlr_total;
     
     
-    public Venda(int CodigoCliente){
-      this.itensDaVenda = new ArrayList<ItemVenda>();
-      
-    }
-
-    public Venda() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public Venda(int CodigoPedido){
+      this.CodigoPedido = CodigoPedido;      
+    }   
 
     public String getData() {
         return data;

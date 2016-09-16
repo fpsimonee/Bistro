@@ -5,7 +5,10 @@
  */
 package Interface;
 
+import Persistence.VendaDAO;
 import java.awt.Rectangle;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -28,7 +31,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
       y = (int) (scr.getHeight()- form.getHeight())/2;
       this.setLocation(x, y);
     }
-
+    
+      public int geraCodigoVenda(){
+       int max_id = new VendaDAO().max_id();
+       return max_id; 
+    }
+    
+    public String CurrentData (){
+       
+       Date date = new Date();       
+       SimpleDateFormat formatador = new SimpleDateFormat();
+       String data = formatador.format(date);       
+       return data;
+    
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,7 +129,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jMenuNovaVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaVendaActionPerformed
         // TODO add your handling code here:
         VendaIT ven = new VendaIT();
-        ven.setVisible(true);        
+        ven.setVisible(true);    
+
     }//GEN-LAST:event_jMenuNovaVendaActionPerformed
 
     /**

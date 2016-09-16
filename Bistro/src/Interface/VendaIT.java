@@ -6,10 +6,12 @@
 package Interface;
 
 
+import Persistence.ItemVendaDAO;
 import Persistence.VendaDAO;
 import Pojo.ItemVenda;
 import Pojo.Produto;
 import Pojo.Venda;
+import java.awt.Rectangle;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,6 +24,7 @@ import java.util.logging.Logger;
 //import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.crypto.Data;
 
@@ -31,22 +34,38 @@ import javax.xml.crypto.Data;
  */
 public class VendaIT extends javax.swing.JFrame {
 
+
+    
+    
+    
     /**
      * Creates new form Venda
      */
     public VendaIT() {
         initComponents();
     }
-
+    
+    public void centralizeFrame(){
+      int x, y; // dimensões da tela
+      Rectangle scr = this.getGraphicsConfiguration().getBounds();
+      Rectangle form = this.getBounds();
+      x = (int) (scr.getWidth() - form.getWidth())/2;
+      y = (int) (scr.getHeight()- form.getHeight())/2;
+      this.setLocation(x, y);
+    }
+    
+    // Adiciona os itens na tabela do Frame 
     public void AdicionaTabela() {
         String a = jTextFieldCodProduto.getText();
         String b = jTextFieldQtdProduto.getText();
         String c = jTextFieldUnitPrice.getText().replaceAll(",", ".");
+        String d = jTextFieldCodigoPedido.getText();
         int CodProduto = Integer.parseInt(a);
         int QtdProduto = Integer.parseInt(b);
         double unitPrice = Double.parseDouble(c);
+        int CodigoPedido = Integer.parseInt(d);
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        modelo.addRow(new Object[]{CodProduto, QtdProduto, unitPrice, (QtdProduto * unitPrice)});
+        modelo.addRow(new Object[]{CodigoPedido, CodProduto, QtdProduto, unitPrice, (QtdProduto * unitPrice)});
         // final da parte que adiciona na Tabela
     }
 
@@ -60,77 +79,29 @@ public class VendaIT extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "A linha já foi Excluída ou não existe!");
         }
     }    
-    public void inserirItemvenda(ItemVenda item){
-      try{
-        
-        // controler para manter ou nao o item, dependendo do status da venda 
-        Produto produto = new Produto();
-        
-        String aux1;
-        String aux2;
-        String aux3;
-        String aux4;
-        
-        for(int i=0;i<jTable1.getRowCount();i++){
-            // pega a linha i e seleciona o valor da coluna que eu definir
-            // Pego o Codigo do Produto
-           aux1 = (String) jTable1.getValueAt(i, 0);
-           item.setCodigoProduto(Integer.parseInt(aux1));
-           
-           // Pego a quantidade do Produto 
-           aux2 = (String) jTable1.getValueAt(i, 1);
-           item.setQuantidade(Integer.parseInt(aux2));
-           
-           // Pego o preço Unitario do produto 
-           aux3 = (String) jTable1.getValueAt(i, 2);
-           item.setUnitprice(Float.parseFloat(aux3));
-           
-           // Pego o Valor Total item 
-           aux4 = (String) jTable1.getValueAt(i, 3);
-           item.setPriceItem(Float.parseFloat(aux4));
-        
-        }
-
-      }catch(Exception e){
-          JOptionPane.showMessageDialog(null, "Erro ao persistir objeto item venda: "+ e.getMessage());
-      }
-    
-    }
-    
+   
+    // Busca o proximo ID de venda na tabela de pedidos do banco de dados 
     public int geraCodigoVenda(){
        int max_id = new VendaDAO().max_id();
        return max_id; 
     }
     
+    // Gera uma string da data corrente para jogar no TextField 
     public String CurrentData (){
        
        Date date = new Date();       
        SimpleDateFormat formatador = new SimpleDateFormat();
        String data = formatador.format(date);       
-       return data;
-    
+       return data;    
     }
     
-// Calculo do Valor total mas nao funcionou 
-//    public void CalculaprecoTotal() {
-//        BigDecimal total = BigDecimal.ZERO;
-//
-//        for (int i = 0; i < jTable1.getRowCount(); i++) {
-//
-//            String valor = jTable1.getValueAt(i, 3) + "";
-//            BigDecimal v1 = new BigDecimal(valor.replace(",", "."));
-//            total = total.add(v1);
-//            System.out.println(total);
-//        }
-//        jTextFieldPrecoTotal.setText(String.valueOf(total));
-//    }
+    public double calcula_valor_total(int cod_venda){
+      double vlr_total = new ItemVendaDAO().sum_id(cod_venda);
+      return vlr_total;
+    }
     
-//    Função para pegar a data corrente 
-//    public String mostraData() {
-//        Date data = new Date();
-//        String date = data.getDay() + "/" + data.getMonth() + "/" + data.getYear();
-//        return date;
-//    }
+    
+ 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -141,7 +112,15 @@ public class VendaIT extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanelNaoEditaveis = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jTextFieldCodigoPedido = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jTextFieldData = new javax.swing.JTextField();
+        jButtonGerarSequencial = new javax.swing.JButton();
+        jTextFieldValorTotal = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jPanelEditaveis = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
@@ -149,69 +128,124 @@ public class VendaIT extends javax.swing.JFrame {
         jTextFieldCodProduto = new javax.swing.JTextField();
         jTextFieldQtdProduto = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jButtonSalvar = new javax.swing.JButton();
-        jButtonCancelar = new javax.swing.JButton();
         jButtonAdd = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jTextFieldUnitPrice = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jButtonExcluirItem = new javax.swing.JButton();
         jTextFieldExcluirItem = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jButtonFecharVenda = new javax.swing.JButton();
+        jButtonSalvar = new javax.swing.JButton();
+        jButtonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Codigo");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
+        jLabel1.setText("Codigo Venda");
+
+        jTextFieldCodigoPedido.setEditable(false);
+        jTextFieldCodigoPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldCodigoPedidoActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Data");
+
+        jTextFieldData.setEditable(false);
+        jTextFieldData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldDataActionPerformed(evt);
+            }
+        });
+
+        jButtonGerarSequencial.setText("GerarNum");
+        jButtonGerarSequencial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGerarSequencialActionPerformed(evt);
+            }
+        });
+
+        jTextFieldValorTotal.setEditable(false);
+
+        jLabel7.setText("Valor Total");
+
+        javax.swing.GroupLayout jPanelNaoEditaveisLayout = new javax.swing.GroupLayout(jPanelNaoEditaveis);
+        jPanelNaoEditaveis.setLayout(jPanelNaoEditaveisLayout);
+        jPanelNaoEditaveisLayout.setHorizontalGroup(
+            jPanelNaoEditaveisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelNaoEditaveisLayout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(jPanelNaoEditaveisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelNaoEditaveisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jButtonGerarSequencial)
+                        .addGroup(jPanelNaoEditaveisLayout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextFieldData, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanelNaoEditaveisLayout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanelNaoEditaveisLayout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(71, Short.MAX_VALUE))
+        );
+        jPanelNaoEditaveisLayout.setVerticalGroup(
+            jPanelNaoEditaveisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelNaoEditaveisLayout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addGroup(jPanelNaoEditaveisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextFieldCodigoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addGroup(jPanelNaoEditaveisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextFieldData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonGerarSequencial)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                .addGroup(jPanelNaoEditaveisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(93, 93, 93))
+        );
+
+        getContentPane().add(jPanelNaoEditaveis, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 270, 400));
+
+        jPanelEditaveis.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Codigo Produto", "Qtd", "Unit Price", "Valor Total"
+                "Codigo Pedido", "Codigo Produto", "Qtd", "Unit Price", "Valor Total"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setHeaderValue("Codigo Produto");
-            jTable1.getColumnModel().getColumn(1).setHeaderValue("Qtd");
-            jTable1.getColumnModel().getColumn(2).setHeaderValue("Unit Price");
-            jTable1.getColumnModel().getColumn(3).setHeaderValue("Valor Total");
-        }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 375, 275));
+        jPanelEditaveis.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 480, 275));
 
         jLabel4.setText("Itens da Venda");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 22, -1, -1));
+        jPanelEditaveis.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
 
         jLabel5.setText("Codigo Produto");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, 120, 20));
+        jPanelEditaveis.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 120, 20));
 
         jTextFieldCodProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCodProdutoActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextFieldCodProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 50, 44, -1));
-        getContentPane().add(jTextFieldQtdProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 45, -1));
+        jPanelEditaveis.add(jTextFieldCodProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, 44, -1));
+        jPanelEditaveis.add(jTextFieldQtdProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 45, -1));
 
         jLabel6.setText("Qtd");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 60, 40, -1));
-
-        jButtonSalvar.setText("Salvar");
-        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSalvarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButtonSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(424, 420, 80, -1));
-
-        jButtonCancelar.setText("Cancelar");
-        getContentPane().add(jButtonCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 420, 84, -1));
+        jPanelEditaveis.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 40, -1));
 
         jButtonAdd.setText("Add");
         jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -219,20 +253,20 @@ public class VendaIT extends javax.swing.JFrame {
                 jButtonAddActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 100, 80, -1));
+        jPanelEditaveis.add(jButtonAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 80, -1));
 
         jLabel3.setText("Unit Price");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 80, -1));
+        jPanelEditaveis.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 80, -1));
 
         jTextFieldUnitPrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldUnitPriceActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextFieldUnitPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 100, 50, -1));
+        jPanelEditaveis.add(jTextFieldUnitPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 50, -1));
 
         jLabel8.setText("Cancela Item: ");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 430, 120, -1));
+        jPanelEditaveis.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 80, -1));
 
         jButtonExcluirItem.setText("Excluir");
         jButtonExcluirItem.addActionListener(new java.awt.event.ActionListener() {
@@ -240,26 +274,29 @@ public class VendaIT extends javax.swing.JFrame {
                 jButtonExcluirItemActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonExcluirItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 420, 82, -1));
-        getContentPane().add(jTextFieldExcluirItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 420, 35, -1));
+        jPanelEditaveis.add(jButtonExcluirItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, 70, -1));
+        jPanelEditaveis.add(jTextFieldExcluirItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 400, 50, -1));
 
-        jTextField1.setEditable(false);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonFecharVenda.setText("Fechar Venda");
+        jButtonFecharVenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jButtonFecharVendaActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 70, -1));
+        jPanelEditaveis.add(jButtonFecharVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 400, -1, -1));
 
-        jLabel2.setText("Data");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
+        getContentPane().add(jPanelEditaveis, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 530, 430));
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSalvar.setText("Salvar");
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                jButtonSalvarActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 130, -1));
+        getContentPane().add(jButtonSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 450, 80, -1));
+
+        jButtonCancelar.setText("Cancelar");
+        getContentPane().add(jButtonCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 450, 84, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -287,9 +324,26 @@ public class VendaIT extends javax.swing.JFrame {
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
         // TODO add your handling code here:
         this.AdicionaTabela();
-        jTextField2.setText(this.CurrentData());
-        String ID = String.valueOf("1"); // alterar o valor do valueof p/ this.geracodigo()
-        jTextField1.setText(ID);
+//        jTextField2.setText(this.CurrentData());      
+//        String ID = String.valueOf(this.geraCodigoVenda()); // alterar o valor do valueof p/ this.geracodigo()
+//        jTextField1.setText(ID);
+        ItemVenda item = new ItemVenda();
+        ItemVendaDAO dao = new ItemVendaDAO();
+        
+        
+        item.setCodigoProduto(Integer.parseInt(jTextFieldCodProduto.getText()));
+        item.setQuantidade(Integer.parseInt(jTextFieldQtdProduto.getText()));
+        item.setUnitprice(Double.parseDouble(jTextFieldUnitPrice.getText().replaceAll(",", ".")));
+        double vlr_total_item = item.getQuantidade()*item.getUnitprice();
+        item.setPriceItem(vlr_total_item);
+        try {
+            dao.inserir(item, Integer.parseInt(jTextFieldCodigoPedido.getText()));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "itens de venda não computados.\n" + ex.getMessage());
+        }
+        
+        
+        
         
     }//GEN-LAST:event_jButtonAddActionPerformed
 
@@ -303,15 +357,48 @@ public class VendaIT extends javax.swing.JFrame {
         this.RemoveItem(id);
     }//GEN-LAST:event_jButtonExcluirItemActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextFieldCodigoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCodigoPedidoActionPerformed
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextFieldCodigoPedidoActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void jTextFieldDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDataActionPerformed
         // TODO add your handling code here:
        
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_jTextFieldDataActionPerformed
+
+    private void jButtonGerarSequencialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGerarSequencialActionPerformed
+        // TODO add your handling code here:
+        jTextFieldData.setText(this.CurrentData());      
+        String ID = String.valueOf(this.geraCodigoVenda()); // alterar o valor do valueof p/ this.geracodigo()
+        jTextFieldCodigoPedido.setText(ID);
+        VendaDAO vdao = new VendaDAO();
+        Venda nova = new Venda(this.geraCodigoVenda());
+        nova.setData(this.CurrentData());
+        
+        try {
+            vdao.inserir(nova);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Venda não inciada.\n" + ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonGerarSequencialActionPerformed
+
+    private void jButtonFecharVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharVendaActionPerformed
+        // TODO add your handling code here:
+        Venda n1 = new Venda(Integer.parseInt(jTextFieldCodigoPedido.getText()));
+        n1.setData(this.CurrentData());
+        n1.setVlr_total(this.calcula_valor_total(Integer.parseInt(jTextFieldCodigoPedido.getText())));
+        
+        VendaDAO vdao2 = new VendaDAO();
+        try {
+            vdao2.atualizar(Integer.parseInt(jTextFieldCodigoPedido.getText()), n1);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Venda não Finalizada.\n" + ex.getMessage());
+        }
+        
+        jTextFieldValorTotal.setText(String.valueOf(this.calcula_valor_total(n1.getCodigoPedido())));
+        
+    }//GEN-LAST:event_jButtonFecharVendaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -352,6 +439,8 @@ public class VendaIT extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonExcluirItem;
+    private javax.swing.JButton jButtonFecharVenda;
+    private javax.swing.JButton jButtonGerarSequencial;
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -359,14 +448,18 @@ public class VendaIT extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanelEditaveis;
+    private javax.swing.JPanel jPanelNaoEditaveis;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextFieldCodProduto;
+    private javax.swing.JTextField jTextFieldCodigoPedido;
+    private javax.swing.JTextField jTextFieldData;
     private javax.swing.JTextField jTextFieldExcluirItem;
     private javax.swing.JTextField jTextFieldQtdProduto;
     private javax.swing.JTextField jTextFieldUnitPrice;
+    private javax.swing.JTextField jTextFieldValorTotal;
     // End of variables declaration//GEN-END:variables
 }
